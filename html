@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Void Portfolio Prototype</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #fff;
+    }
+
+    #game {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: #000;
+    }
+
+    /* Player (white dot) */
+    #player {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* World buttons in the void */
+    .world-button {
+      position: absolute;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .world-button::after {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      border: 2px solid #000;
+    }
+
+    .world-button[data-world="ux"] {
+      background: #3b82f6; /* blue */
+      left: 25%;
+      top: 40%;
+    }
+
+    .world-button[data-world="illustration"] {
+      background: #ef4444; /* red */
+      left: 50%;
+      top: 30%;
+    }
+
+    .world-button[data-world="web"] {
+      background: #22c55e; /* green */
+      left: 75%;
+      top: 40%;
+    }
+
+    /* Back button */
+    #backButton {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      top: 16px;
+      left: 16px;
+      cursor: pointer;
+      display: none;
+    }
+
+    #backButton::after {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      border: 2px solid #000;
+    }
+
+    /* Floating info buttons inside worlds */
+    .info-button {
+      position: absolute;
+      padding: 6px 10px;
+      font-size: 12px;
+      border: 1px solid #fff;
+      background: rgba(0, 0, 0, 0.7);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* Info panel */
+    #infoPanel {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 80vw;
+      padding: 10px 14px;
+      font-size: 13px;
+      border: 1px solid #fff;
+      background: rgba(0, 0, 0, 0.85);
+      display: none;
+    }
+
+    /* WORLD STYLES */
+
+    /* Base void */
+    .world-void {
+      background: #000;
+    }
+
+    /* UX world: wireframe */
+    .world-ux {
+      background: #020617;
+      background-image:
+        linear-gradient(#1f2937 1px, transparent 1px),
+        linear-gradient(90deg, #1f2937 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Illustration world: flat canvas */
+    .world-illustration {
+      background: #111827;
+    }
+
+    .world-illustration::before {
+      content: "";
+      position: absolute;
+      inset: 10%;
+      border: 2px solid #f97316;
+      pointer-events: none;
+    }
+
+    /* Web world: pixel grid */
+    .world-web {
+      background: #020617;
+      background-image:
+        linear-gradient(#0f172a 2px, transparent 2px),
+        linear-gradient(90deg, #0f172a 2px, transparent 2px);
+      background-size: 20px 20px;
+    }
+
+    /* Simple label for testing */
+    #worldLabel {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      font-size: 12px;
+      padding: 4px 8px;
+      border: 1px solid #fff;
+      background: rgba(0, 0, 0, 0.7);
+    }
+  </style>
+</head>
+<body>
+  <div id="game" class="world-void">
+    <div id="player"></div>
+
+    <!-- World buttons in the void -->
+    <div class="world-button" data-world="ux" title="UX/UI"></div>
+    <div class="world-button" data-world="illustration" title="Illustration"></div>
+    <div class="world-button" data-world="web" title="Web Design"></div>
+
+    <!-- Back button -->
+    <div id="backButton" title="Back to void"></div>
+
+    <!-- Info panel -->
+    <div id="infoPanel"></div>
+
+    <!-- World label -->
+    <div id="worldLabel">World: VOID</div>
+  </div>
+
+  <script>
+    const game = document.getElementById("game");
+    const player = document.getElementById("player");
+    const backButton = document.getElementById("backButton");
+    const infoPanel = document.getElementById("infoPanel");
+    const worldLabel = document.getElementById("worldLabel");
+
+    const worldButtons = Array.from(document.querySelectorAll(".world-button"));
+
+    let world = "void"; // "void" | "ux" | "illustration" | "web"
+    let playerX = window.innerWidth / 2;
+    let playerY = window.innerHeight / 2;
+    const speed = 3;
+
+    const keys = {
+      ArrowUp: false,
+      ArrowDown: false,
+      ArrowLeft: false,
+      ArrowRight: false,
+      w: false,
+      a: false,
+      s: false,
+      d: false
+    };
+
+    function setWorld(newWorld) {
+      world = newWorld;
+      game.className = "";
+      game.classList.add("world-" + newWorld);
+      worldLabel.textContent = "World: " + newWorld.toUpperCase();
+
+      // Reset info
+      infoPanel.style.display = "none";
+      infoPanel.textContent = "";
+
+      // Show/hide back button and void buttons
+      if (newWorld === "void") {
+        backButton.style.display = "none";
+        worldButtons.forEach(b => b.style.display = "block");
+        // Remove any existing info buttons
+        document.querySelectorAll(".info-button").forEach(el => el.remove());
+      } else {
+        backButton.style.display = "block";
+        worldButtons.forEach(b => b.style.display = "none");
+        createWorldInfoButtons(newWorld);
+      }
+    }
+
+    function createWorldInfoButtons(worldName) {
+      // Clear old
+      document.querySelectorAll(".info-button").forEach(el => el.remove());
+
+      const configs = {
+        ux: [
+          { x: 20, y: 40, label: "Case Studies", text: "UX/UI case studies: flows, wireframes, prototypes, and decisions." },
+          { x: 60, y: 50, label: "Wireframes", text: "Low-fidelity wireframes showing structure and hierarchy." },
+          { x: 40, y: 65, label: "Process", text: "Problem → research → ideation → testing → iteration." }
+        ],
+        illustration: [
+          { x: 25, y: 45, label: "Final Art", text: "Selected illustrations that show your style and strengths." },
+          { x: 55, y: 35, label: "Sketches", text: "Rough sketches and explorations behind the final pieces." },
+          { x: 70, y: 60, label: "Concepts", text: "Character, world, and visual concept explorations." }
+        ],
+        web: [
+          { x: 30, y: 40, label: "Web Projects", text: "Live or demo web projects you’ve designed and built." },
+          { x: 65, y: 50, label: "Components", text: "Reusable UI components and patterns you’ve created." },
+          { x: 50, y: 65, label: "Code & Design", text: "How you bridge visual design and front-end implementation." }
+        ]
+      };
+
+      const list = configs[worldName] || [];
+      list.forEach(cfg => {
+        const btn = document.createElement("div");
+        btn.className = "info-button";
+        btn.style.left = cfg.x + "vw";
+        btn.style.top = cfg.y + "vh";
+        btn.textContent = cfg.label;
+        btn.dataset.infoText = cfg.text;
+        game.appendChild(btn);
+      });
+    }
+
+    function showInfo(text) {
+      infoPanel.textContent = text;
+      infoPanel.style.display = "block";
+    }
+
+    function hideInfo() {
+      infoPanel.style.display = "none";
+      infoPanel.textContent = "";
+    }
+
+    function rectsOverlap(r1, r2) {
+      return !(
+        r1.right < r2.left ||
+        r1.left > r2.right ||
+        r1.bottom < r2.top ||
+        r1.top > r2.bottom
+      );
+    }
+
+    function updatePlayerPosition() {
+      let dx = 0;
+      let dy = 0;
+
+      if (keys.ArrowUp || keys.w) dy -= 1;
+      if (keys.ArrowDown || keys.s) dy += 1;
+      if (keys.ArrowLeft || keys.a) dx -= 1;
+      if (keys.ArrowRight || keys.d) dx += 1;
+
+      if (dx !== 0 || dy !== 0) {
+        const len = Math.sqrt(dx * dx + dy * dy) || 1;
+        dx /= len;
+        dy /= len;
+        playerX += dx * speed;
+        playerY += dy * speed;
+      }
+
+      // Clamp to viewport
+      const radius = 8;
+      playerX = Math.max(radius, Math.min(window.innerWidth - radius, playerX));
+      playerY = Math.max(radius, Math.min(window.innerHeight - radius, playerY));
+
+      player.style.left = playerX + "px";
+      player.style.top = playerY + "px";
+    }
+
+    function checkCollisions() {
+      const playerRect = player.getBoundingClientRect();
+
+      if (world === "void") {
+        // Check world buttons
+        for (const btn of worldButtons) {
+          const r = btn.getBoundingClientRect();
+          if (rectsOverlap(playerRect, r)) {
+            const w = btn.dataset.world;
+            setWorld(w);
+            break;
+          }
+        }
+      } else {
+        // Back button
+        const backRect = backButton.getBoundingClientRect();
+        if (rectsOverlap(playerRect, backRect)) {
+          setWorld("void");
+          worldLabel.textContent = "World: VOID";
+          return;
+        }
+
+        // Info buttons
+        const infoButtons = Array.from(document.querySelectorAll(".info-button"));
+        let collided = false;
+        for (const btn of infoButtons) {
+          const r = btn.getBoundingClientRect();
+          if (rectsOverlap(playerRect, r)) {
+            showInfo(btn.dataset.infoText || "");
+            collided = true;
+            break;
+          }
+        }
+        if (!collided) {
+          hideInfo();
+        }
+      }
+    }
+
+    function loop() {
+      updatePlayerPosition();
+      checkCollisions();
+      requestAnimationFrame(loop);
+    }
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key in keys) {
+        keys[e.key] = true;
+      }
+    });
+
+    window.addEventListener("keyup", (e) => {
+      if (e.key in keys) {
+        keys[e.key] = false;
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      // Keep player inside bounds on resize
+      playerX = Math.min(playerX, window.innerWidth - 8);
+      playerY = Math.min(playerY, window.innerHeight - 8);
+    });
+
+    // Init
+    setWorld("void");
+    loop();
+  </script>
+</body>
+</html>
