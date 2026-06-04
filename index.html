@@ -1,13 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Matthew Portfolio Introduction</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matthew Wolstencroft Portfolio</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- The JS builds the entire interface -->
+
+  <!-- Intro Overlay -->
+  <div id="matthew-portfolio-intro">
+    <div class="mpi-center">
+      <div class="mpi-title">
+        M
+        <span class="mpi-triangle-wrapper">
+          <span class="mpi-triangle-letter"></span>
+        </span>
+        <span class="mpi-rest">TTHEW</span>
+      </div>
+      <div class="mpi-surname">WOLSTENCROFT</div>
+      <div class="mpi-portfolio">PORTFOLIO</div>
+      <div class="mpi-sub">CLICK TRIANGLE TO START</div>
+    </div>
+  </div>
+
+  <!-- Player Dot -->
+  <div id="player-dot"></div>
+
+  <!-- Triangle Corners -->
+  <div id="corner-top" class="corner"></div>
+  <div id="corner-left" class="corner"></div>
+  <div id="corner-right" class="corner"></div>
+
+  <!-- Vertex Markers -->
+  <div id="marker-top" class="vertex-marker"></div>
+  <div id="marker-left" class="vertex-marker"></div>
+  <div id="marker-right" class="vertex-marker"></div>
+
+  <!-- WASD Tutorial -->
+  <div id="wasd-tutorial">
+    <div class="wasd-row">
+      <div class="wasd-btn" id="btn-w">W</div>
+    </div>
+    <div class="wasd-row">
+      <div class="wasd-btn" id="btn-a">A</div>
+      <div class="wasd-btn" id="btn-s">S</div>
+      <div class="wasd-btn" id="btn-d">D</div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
