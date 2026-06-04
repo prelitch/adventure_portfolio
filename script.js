@@ -1,160 +1,22 @@
-body {
-  margin: 0;
-  background: #050509;
-  overflow: hidden;
-  font-family: system-ui, sans-serif;
-}
+/* ———————————————— GLOBAL STYLES ———————————————— */
 
-/* Intro container */
-#matthew-portfolio-intro {
-  position: fixed;
-  inset: 0;
-  background: #050509;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999999;
-  text-align: center;
-}
-
-.mpi-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transform: translateY(80px);
-}
-
-.mpi-title {
-  font-size: 60px;
-  letter-spacing: 0.12em;
-  margin-bottom: 10px;
-  white-space: nowrap;
-  text-align: center;
-  position: relative;
-}
-
-/* Tight spacing */
-.mpi-triangle-wrapper {
-  display: inline-block;
-  width: 16px;
-  height: 40px;
-  position: relative;
-}
-
-.mpi-rest {
-  display: inline-block;
-  margin-left: 0px;
-}
-
-.mpi-surname,
-.mpi-portfolio {
-  font-size: 28px;
-  letter-spacing: 0.15em;
-  margin-top: 6px;
-}
-
-.mpi-sub {
-  font-size: 14px;
-  letter-spacing: 0.2em;
-  opacity: 0.7;
-  margin-top: 30px;
-}
-
-/* Triangle */
-.mpi-triangle-letter {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 0;
-  height: 0;
-  border-left: 22px solid transparent;
-  border-right: 22px solid transparent;
-  border-bottom: 36px solid #ffffff;
-  cursor: pointer;
-  animation: mpi-bob 1.2s ease-in-out infinite;
-  z-index: 1000000;
-}
-
-@keyframes mpi-bob {
-  0%   { transform: translate(-50%, -50%) translateY(0); }
-  50%  { transform: translate(-50%, -50%) translateY(-10px); }
-  100% { transform: translate(-50%, -50%) translateY(0); }
-}
-
-/* Slide + grow animations */
-@keyframes mpi-slide-into-middle {
-  0%   { transform: translate(-50%, -50%) translateX(0) scale(1); }
-  100% { transform: translate(-50%, -50%) translateX(32px) scale(1.2); }
-}
-
-@keyframes mpi-grow-from-middle {
-  0%   { transform: translate(-50%, -50%) translateX(32px) scale(1.2); }
-  100% { transform: translate(-50%, -50%) translateX(32px) scale(23); }
-}
-
-/* Player dot */
 #player-dot {
   position: fixed;
-  width: 26px;
-  height: 26px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: black;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999999;
+  z-index: 9999999999;
   display: none;
-  transition: background-color 0.08s linear;
+  transition: background 0.15s linear;
 }
 
-/* Portals */
-.portal {
-  position: fixed;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  z-index: 9999998;
-  display: none;
+/* Fade-in override for corner triangles */
+#corner-top,
+#corner-left,
+#corner-right {
+  opacity: 0;
+  transition: opacity 2.4s ease-out;
 }
 
-#portal-top { background: blue; }
-#portal-left { background: red; }
-#portal-right { background: green; }
-
-/* WASD tutorial */
-#wasd-tutorial {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  display: none;
-  z-index: 99999999;
-  color: white;
-}
-
-#wasd-tutorial .key {
-  width: 40px;
-  height: 40px;
-  border: 2px solid white;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 4px;
-  font-size: 20px;
-  font-weight: bold;
-  transition: transform 0.1s ease, background 0.1s ease;
-}
-
-#wasd-tutorial .key-row {
-  display: flex;
-}
-
-.key.pressed {
-  transform: translateY(3px);
-  background: white;
-  color: black;
-}
-
+/* The rest of the CSS is injected by script.js */
