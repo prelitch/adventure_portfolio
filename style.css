@@ -1,4 +1,3 @@
-/* GENERAL */
 body {
   margin: 0;
   background: #050509;
@@ -6,7 +5,7 @@ body {
   overflow: hidden;
 }
 
-/* INTRO OVERLAY */
+/* INTRO */
 #matthew-portfolio-intro {
   position: fixed;
   inset: 0;
@@ -16,7 +15,6 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 999999;
-  text-align: center;
 }
 
 .mpi-center {
@@ -30,7 +28,6 @@ body {
   font-size: 60px;
   letter-spacing: 0.12em;
   margin-bottom: 10px;
-  white-space: nowrap;
 }
 
 .mpi-triangle-wrapper {
@@ -51,10 +48,10 @@ body {
   border-right: 22px solid transparent;
   border-bottom: 36px solid #ffffff;
   cursor: pointer;
-  animation: mpi-bob 1.2s ease-in-out infinite;
+  animation: float 1.2s ease-in-out infinite;
 }
 
-@keyframes mpi-bob {
+@keyframes float {
   0% { transform: translate(-50%, -50%) translateY(0); }
   50% { transform: translate(-50%, -50%) translateY(-10px); }
   100% { transform: translate(-50%, -50%) translateY(0); }
@@ -81,8 +78,8 @@ body {
   height: 22px;
   border-radius: 50%;
   background: black;
-  z-index: 9999999999;
   display: none;
+  z-index: 9999999999;
 }
 
 /* TRIANGLE CORNERS */
@@ -91,22 +88,24 @@ body {
   width: 0;
   height: 0;
   display: none;
-  z-index: 9999998;
-  border-left: 22px solid transparent;
-  border-right: 22px solid transparent;
-  border-bottom: 36px solid #2f7dff;
   opacity: 0;
   transition: opacity 2.4s ease-out;
+  border-left: 22px solid transparent;
+  border-right: 22px solid transparent;
+}
+
+#corner-top {
+  border-bottom: 36px solid #2f7dff;
 }
 
 #corner-left {
   transform: rotate(121deg);
-  border-bottom-color: #ff4040;
+  border-bottom: 36px solid #ff4040;
 }
 
 #corner-right {
   transform: rotate(239deg);
-  border-bottom-color: #00c853;
+  border-bottom: 36px solid #00c853;
 }
 
 /* MARKERS */
@@ -114,19 +113,17 @@ body {
   position: fixed;
   width: 6px;
   height: 6px;
-  background: red;
-  opacity: 0;
-  pointer-events: none;
+  background: transparent;
 }
 
-/* WASD TUTORIAL */
+/* WASD */
 #wasd-tutorial {
   position: fixed;
   display: none;
   flex-direction: column;
   gap: 14px;
-  z-index: 999999999;
   pointer-events: none;
+  z-index: 999999999;
 }
 
 .wasd-row {
@@ -147,7 +144,6 @@ body {
   justify-content: center;
   font-size: 38px;
   font-weight: 700;
-  color: #000;
 }
 
 .wasd-btn.active {
