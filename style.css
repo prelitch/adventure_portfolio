@@ -1,5 +1,4 @@
-/* ———————————————— GLOBAL STYLES ———————————————— */
-
+/* Global dot styling */
 #player-dot {
   position: fixed;
   width: 22px;
@@ -11,12 +10,10 @@
   transition: background 0.15s linear;
 }
 
-/* Fade-in override for corner triangles */
+/* Fade-in for corner triangles */
 #corner-top,
 #corner-left,
 #corner-right {
   opacity: 0;
   transition: opacity 2.4s ease-out;
 }
-
-/* The rest of the CSS is injected by script.js */
