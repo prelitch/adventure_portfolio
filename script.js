@@ -1,8 +1,10 @@
+// PLAYER STATE
 let px = 0;
 let py = 0;
 const speed = 3;
 const keys = { w: false, a: false, s: false, d: false };
 
+// ELEMENTS
 const triangle = document.querySelector('.mpi-triangle-letter');
 const player = document.getElementById('player-dot');
 const wasd = document.getElementById('wasd-tutorial');
@@ -19,15 +21,13 @@ let clicked = false;
 let tutorialActive = false;
 let tutorialInterval = null;
 
+// CLICK TRIANGLE
 triangle.addEventListener('click', () => {
   if (clicked) return;
   clicked = true;
 
-  triangle.style.animation = 'mpi-slide-in 0.6s forwards';
-
-  setTimeout(() => {
-    triangle.style.animation = 'mpi-grow 2.5s ease-out forwards';
-  }, 600);
+  // stop idle float
+  triangle.style.animation = 'none';
 
   setTimeout(() => {
     const rect = triangle.getBoundingClientRect();
@@ -36,11 +36,13 @@ triangle.addEventListener('click', () => {
     const bottomY = rect.bottom;
     const halfW = rect.width / 2;
 
+    // WASD tutorial
     wasd.style.left = cx + 'px';
     wasd.style.top = (topY + bottomY) / 2 + 'px';
     wasd.style.transform = 'translate(-50%, -50%)';
     wasd.style.display = 'flex';
 
+    // player start (triangle centroid)
     const centroidX = (cx + (cx - halfW) + (cx + halfW)) / 3;
     const centroidY = (topY + bottomY + bottomY) / 3;
 
@@ -51,6 +53,7 @@ triangle.addEventListener('click', () => {
     player.style.top = py + 'px';
     player.style.display = 'block';
 
+    // markers
     markerTop.style.left = (cx - 3) + 'px';
     markerTop.style.top = (topY - 3) + 'px';
 
@@ -60,6 +63,7 @@ triangle.addEventListener('click', () => {
     markerRight.style.left = (cx + halfW - 3) + 'px';
     markerRight.style.top = (bottomY - 3) + 'px';
 
+    // corners
     cornerTop.style.left = (cx - 22) + 'px';
     cornerTop.style.top = topY + 'px';
 
@@ -79,6 +83,7 @@ triangle.addEventListener('click', () => {
       cornerRight.style.opacity = 1;
     });
 
+    // WASD tutorial pulse
     tutorialActive = true;
     const order = ['btn-w', 'btn-a', 'btn-s', 'btn-d'];
     let i = 0;
@@ -90,6 +95,7 @@ triangle.addEventListener('click', () => {
       i = (i + 1) % order.length;
     }, 500);
 
+    // labels (purple bar positions style)
     function placeLabel(text, color, x, y) {
       const label = document.createElement('div');
       label.className = 'triangle-label';
@@ -105,9 +111,10 @@ triangle.addEventListener('click', () => {
     placeLabel('ILLUSTRATION', '#ff4040', cx - halfW - 80, bottomY - 20);
     placeLabel('WEB DESIGN', '#00c853', cx + halfW + 80, bottomY - 20);
 
-  }, 3200);
+  }, 300); // small delay just to feel responsive
 });
 
+// HIDE TUTORIAL ON FIRST MOVE
 function hideTutorial() {
   if (!tutorialActive) return;
   tutorialActive = false;
@@ -126,14 +133,15 @@ document.addEventListener('keyup', e => {
   if (keys[e.key] !== undefined) keys[e.key] = false;
 });
 
+// GAME LOOP
 function gameLoop() {
   if (player.style.display === 'block') {
-
     if (keys.w) py -= speed;
     if (keys.s) py += speed;
     if (keys.a) px -= speed;
     if (keys.d) px += speed;
 
+    // screen borders
     const dotSize = 22;
     const maxX = window.innerWidth - dotSize;
     const maxY = window.innerHeight - dotSize;
