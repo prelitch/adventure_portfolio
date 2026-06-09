@@ -1,0 +1,186 @@
+/* ============================
+   START: SECTION 2 — CSS
+   ============================ */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #050509;
+    overflow: hidden;
+    font-family: system-ui, sans-serif;
+}
+
+/* INTRO */
+#matthew-portfolio-intro {
+    position: fixed;
+    inset: 0;
+    background: #050509;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999999;
+    text-align: center;
+}
+
+.mpi-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateY(80px);
+}
+
+.mpi-title {
+    font-size: 60px;
+    letter-spacing: 0.12em;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    position: relative;
+}
+
+.mpi-triangle-wrapper {
+    display: inline-block;
+    width: 16px;
+    height: 40px;
+    position: relative;
+}
+
+.mpi-triangle-letter {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    border-left: 22px solid transparent;
+    border-right: 22px solid transparent;
+    border-bottom: 36px solid #ffffff;
+    cursor: pointer;
+    animation: mpi-bob 1.2s ease-in-out infinite;
+}
+
+@keyframes mpi-bob {
+    0% { transform: translate(-50%, -50%) translateY(0); }
+    50% { transform: translate(-50%, -50%) translateY(-10px); }
+    100% { transform: translate(-50%, -50%) translateY(0); }
+}
+
+@keyframes mpi-slide-into-middle {
+    0% { transform: translate(-50%, -50%) translateX(0) scale(1); }
+    100% { transform: translate(-50%, -50%) translateX(75px) scale(1.2); }
+}
+
+@keyframes mpi-grow-from-middle {
+    0% { transform: translate(-50%, -50%) translateX(75px) scale(1.2); }
+    100% { transform: translate(-50%, -50%) translateX(75px) scale(23); }
+}
+
+/* PLAYER */
+#player-dot {
+    position: fixed;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: black;
+    display: none;
+    z-index: 9999999999;
+}
+
+/* TRIANGLE MARKERS */
+.vertex-marker {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: red;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9999999999;
+}
+
+/* CORNERS */
+.corner {
+    position: fixed;
+    width: 0;
+    height: 0;
+    display: none;
+    z-index: 999999998;
+    border-left: 22px solid transparent;
+    border-right: 22px solid transparent;
+    border-bottom: 36px solid #27d7ff;
+    opacity: 0;
+    transition: opacity 2.4s ease-out;
+}
+
+#corner-left { transform: rotate(121deg); border-bottom-color: #ff4040; }
+#corner-right { transform: rotate(239deg); border-bottom-color: #00c853; }
+
+/* WASD */
+#wasd-tutorial {
+    position: fixed;
+    display: none;
+    flex-direction: column;
+    gap: 14px;
+    z-index: 999999999;
+    pointer-events: none;
+}
+
+.wasd-row {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+}
+
+.wasd-btn {
+    width: 90px;
+    height: 90px;
+    border-radius: 12px;
+    background: linear-gradient(#f2f2f2, #d9d9d9);
+    border: 4px solid #ffffff;
+    box-shadow: 0px 6px 8px #b5b5b5, 0px 0px 18px rgba(255,255,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    font-weight: 700;
+    color: #008;
+}
+
+.wasd-btn.active {
+    transform: translateY(6px);
+    box-shadow: 0px 2px 0px #b5b5b5, 0px 0px 10px rgba(255,255,255,0.15);
+}
+
+/* LABELS */
+.triangle-label {
+    position: fixed;
+    font-size: 16px;
+    font-weight: 600;
+    pointer-events: none;
+    z-index: 9999999999;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+/* WORLD OVERLAY */
+#world-overlay {
+    position: fixed;
+    inset: 0;
+    background: #000a;
+    backdrop-filter: blur(8px);
+    color: white;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 99999999999;
+    text-align: center;
+}
+
+#world-title {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+/* ============================
+   END: SECTION 2 — CSS
+   ============================ */
